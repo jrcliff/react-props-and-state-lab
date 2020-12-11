@@ -1,3 +1,4 @@
+
 const MALE_PET_NAMES = [
   "Rocket",
   "Strike",
@@ -84,7 +85,7 @@ const AMOUNT_OF_PETS = 35;
 
 const result = [];
 
-for ( let i = 0; i < AMOUNT_OF_PETS; i++ ) {
+let petGenerator = () => {for ( let i = 0; i < AMOUNT_OF_PETS; i++ ) {
   const pet = {
     id: uuid.v4(),
     type: getRandomFromArray( ANIMAL_TYPES ),
@@ -96,6 +97,7 @@ for ( let i = 0; i < AMOUNT_OF_PETS; i++ ) {
   pet.name = pet.gender === 'male' ? getRandomFromArray( MALE_PET_NAMES ) : getRandomFromArray( FEMALE_PET_NAMES );
 
   result.push( pet );
+}
 }
 
 console.log( JSON.stringify( result, null, 2 ) );
