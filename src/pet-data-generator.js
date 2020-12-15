@@ -85,7 +85,7 @@ const AMOUNT_OF_PETS = 35;
 
 const result = [];
 
-let petGenerator = () => {for ( let i = 0; i < AMOUNT_OF_PETS; i++ ) {
+for ( let i = 0; i < AMOUNT_OF_PETS; i++ ) {
   const pet = {
     id: uuid.v4(),
     type: getRandomFromArray( ANIMAL_TYPES ),
@@ -98,6 +98,6 @@ let petGenerator = () => {for ( let i = 0; i < AMOUNT_OF_PETS; i++ ) {
 
   result.push( pet );
 }
-}
+
 
 console.log( JSON.stringify( result, null, 2 ) );

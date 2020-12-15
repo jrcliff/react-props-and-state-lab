@@ -1,37 +1,47 @@
-import React from "react";
+import React from "react"
 
-import Filters from "./Filters";
-import PetBrowser from "./PetBrowser";
+import Filters from "./Filters"
+import PetBrowser from "./PetBrowser"
+
+const BASE_URL = '/api/pets'
 
 class App extends React.Component {
   constructor() {
-    super();
+    super()
 
     this.state = {
       pets: [],
       filters: {
-        type: "all",
-      },
+        type: "all"
+      }
     };
   }
-  onChangeType = (event) => {
+    onFindPetsClick = async () => {
+
+    let type = this.state.filters.type === 'all' ? '' : this.state.filters.type
+    const resp = await fetch(`${BASE_URL}?type=${type}`)
+    const pets = await resp.json()
+    this.setState({pets: pets})
+  }
+
+  onChangeFilter = (filter) => {
     this.setState({
       filters: {
-        type: {...this.state.filters,
-          type: event.target.value
-      },
+        type: filter
+      }
     });
   };
 
-  onFindPetsClick = () => {
-    let url = this.state.filters.type === 'all' ? '' : ('?type=' + this.state.filters)
-    fetch(`localhost:3000/api/pets${url}`)
-      .then((resp) => resp.json())
-      .then((newPet) => this.setState({ pets: newPet}));
-  };
+
+  onAdoptPet = (petId) => {
+    const pets = this.state.pets.map(pet => {
+      return pet.id === petId ? {...pet, isAdopted: true} : pet
+    })
+    this.setState({pets: pets})
+  }
 
   render() {
-    console.log();
+    
     return (
       <div className="ui container">
         <header>
@@ -41,17 +51,17 @@ class App extends React.Component {
           <div className="ui grid">
             <div className="four wide column">
               <Filters
-                onChangeType={() => this.onChangeType()}
+                onChangeFilter={this.onChangeFilter}
                 onFindPetsClick={this.onFindPetsClick}
               />
             </div>
             <div className="twelve wide column">
-              <PetBrowser petData={this.state.pets} />
+              <PetBrowser onAdoptPet={this.onAdoptPet} pets={this.state.pets} />
             </div>
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 
